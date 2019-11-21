@@ -10,7 +10,7 @@ module.exports = {
     }) => {
         const table = 'user_groups';
         const fields = 'userIdx, groupIdx';
-        const questions = `?, ?`;
+        const questions = `?`;
         return new Promise(async (resolve, reject) => {
             // userIdx 여부 체크
             const userIdx = await pool.queryParam_None(`SELECT userIdx FROM user WHERE id='${id}'`);
@@ -22,9 +22,10 @@ module.exports = {
                 return;
             }
             // group create 성공
-            const query = `INSERT INTO ${table}(${fields}) VALUES(${questions})`;
-            const values = [userIdx, groupIdx];
-            const result = await pool.queryParam_Parse(query, values);
+            const query = `INSERT INTO ${table}(${fields}) VALUES('${userIdx[0].userIdx}',${groupIdx})`;
+            //const values = [userIdx[0].userIdx, groupIdx];
+            //console.log(values);
+            const result = await pool.queryParam_None(query);
             if (!result) {
                 resolve({
                     code: statusCode.INTERNAL_SERVER_ERROR,

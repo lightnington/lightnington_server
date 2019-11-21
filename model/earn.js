@@ -1,6 +1,7 @@
 const utils = require("../module/util/utils");
 const statusCode = require("../module/util/statusCode");
 const responseMessage = require("../module/util/responseMessage");
+const moment = require('moment');
 const pool = require("../module/poolAsync");
 
 module.exports = {
@@ -8,6 +9,8 @@ module.exports = {
     id
   }) => {
     const table = "user";
+    const current = moment().format("H");
+    const count = 11 - current;
     return new Promise(async (resolve, reject) => {
       // userIdx 여부 체크
       const userIdx = await pool.queryParam_None(`SELECT userIdx FROM user WHERE id='${id}'`);
@@ -19,7 +22,7 @@ module.exports = {
         });
         return;
       }
-      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE userIdx='${userIdx[0].userIdx}'`;
+      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+${count} WHERE userIdx='${userIdx[0].userIdx}'`;
       const updateResult = await pool.queryParam_None(updateQuery);
       const currentMandarin = await pool.queryParam_None(
         `SELECT mandarins FROM ${table} WHERE id='${id}'`

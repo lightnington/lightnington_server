@@ -9,7 +9,6 @@ const utils = require("../../../module/util/utils");
 router.patch("/", (req, res) => {
   const { name } = req.params;
   const { id } = req.body;
-  // 아이디 중복 체크
   if (!name || !id) {
     const missParameters = Object.entries({
       name,

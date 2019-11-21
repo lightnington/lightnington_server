@@ -7,14 +7,14 @@ const Invite = require('../../../model/invite');
 const utils = require("../../../module/util/utils");
 
 router.post('/', (req, res) => {
-  const {groupIdx} = req.params;
+  const {name} = req.params;
   const {
       id
   } = req.body;
   // 아이디 중복 체크
-  if (!groupIdx || !id) {
+  if (!name || !id) {
       const missParameters = Object.entries({
-              groupIdx,
+              name,
               id
           })
           .filter(it => it[1] == undefined).map(it => it[0]).join(',');
@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
       return;
   }
   Invite.create({
-          groupIdx,
+          name,
           id
       })
       .then(({

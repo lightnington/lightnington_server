@@ -5,15 +5,16 @@ const pool = require("../module/poolAsync");
 
 module.exports = {
     read: ({
-        groupIdx
+        name
     }) => {
         const table = 'user_groups';
         const rows = [];
-        const jss = {};
-        const query = `SELECT mandarins, id, userIdx FROM ${table} WHERE groupIdx=${groupIdx};`;
         const message = responseMessage.RANK_READ_SUCCESS;
         return new Promise(async (resolve, reject) => {
+            const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM groups WHERE name=${name};`)
+            const query = `SELECT mandarins, id FROM ${table} WHERE groupIdx=${groupIdx};`;
             const result = await pool.queryParam_None(query);
+            
             result.forEach(function(row){
                 rows.push(row);
             });

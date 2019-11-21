@@ -25,7 +25,7 @@ router.patch("/", (req, res) => {
       );
     return;
   }
-  Earn.selectMandarins({
+  Earn.makeMandarins({
     groupIdx,
     userIdx
   })

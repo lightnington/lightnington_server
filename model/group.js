@@ -4,6 +4,50 @@ const responseMessage = require('../module/util/responseMessage');
 const pool = require("../module/poolAsync");
 
 module.exports = {
+    readAll: (
+    ) => {
+        const table = 'groups';
+        const query = `SELECT * FROM ${table};`;
+        const message = responseMessage.GROUP_READ_SUCCESS;
+        return new Promise(async (resolve, reject) => {
+            const result = await pool.queryParam_None(query);
+
+            if (!result) {
+                resolve({
+                    code: statusCode.NOT_FOUND,
+                    json: utils.successFalse(responseMessage.GROUP_READ_FAIL)
+                });
+                return;
+            }
+            resolve({
+                code: statusCode.OK,
+                json: utils.successTrue(message, result)
+            });
+        });
+    },
+    read: ({
+        name
+    }) => {
+            const table = 'user_groups';
+            const message = responseMessage.GROUP_READ_SUCCESS;
+            return new Promise(async (resolve, reject) => {
+                const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM groups WHERE name='${name}'`);
+                const query = `SELECT * FROM ${table} WHERE groupIdx='${groupIdx[0].groupIdx}';`;
+                const result = await pool.queryParam_None(query);
+    
+                if (!result) {
+                    resolve({
+                        code: statusCode.NOT_FOUND,
+                        json: utils.successFalse(responseMessage.GROUP_READ_FAIL)
+                    });
+                    return;
+                }
+                resolve({
+                    code: statusCode.OK,
+                    json: utils.successTrue(message, result)
+                });
+            });
+        },
     create: ({
         name
     }) => {

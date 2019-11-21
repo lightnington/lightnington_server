@@ -6,7 +6,7 @@ const responseMessage = require("../../../module/util/responseMessage");
 const Earn = require("../../../model/earn");
 const utils = require("../../../module/util/utils");
 
-router.patch("/", (req, res) => {
+router.post("/", (req, res) => {
   const { name } = req.params;
   const { id } = req.body;
   if (!name || !id) {

@@ -12,7 +12,7 @@ module.exports = {
         const message = responseMessage.RANK_READ_SUCCESS;
         return new Promise(async (resolve, reject) => {
             const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM groups WHERE name=${name};`)
-            const query = `SELECT mandarins, id FROM ${table} WHERE groupIdx=${groupIdx};`;
+            const query = `SELECT mandarins, id FROM ${table} WHERE groupIdx=${groupIdx[0].groupIdx};`;
             const result = await pool.queryParam_None(query);
             
             result.forEach(function(row){

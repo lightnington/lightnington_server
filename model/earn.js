@@ -4,39 +4,42 @@ const responseMessage = require("../module/util/responseMessage");
 const pool = require("../module/poolAsync");
 
 module.exports = {
-  makeMandarins: ({ groupIdx, userIdx, mandarins }) => {
+  selectMandarins: ({ groupIdx, userIdx }) => {
     const table = "user_groups";
-    const fields = "userIdx, groupIdx";
-    const questions = `?`;
+    const selectQuery = `SELECT mandarins, userIdx FROM ${table} WHERE groupIdx=${groupIdx} AND userIdx='${userIdx}';`;
+    const message = responseMessage.RANK_READ_SUCCESS;
     return new Promise(async (resolve, reject) => {
-      // userIdx 여부 체크
-      const userIdx = await pool.queryParam_None(
-        `SELECT userIdx FROM user WHERE id='${id}'`
-      );
-      if (!userIdx) {
-        resolve({
-          code: statusCode.BAD_REQUEST,
-          json: utils.successFalse(responseMessage.NO_USER)
-        });
-        return;
-      }
-      // group create 성공
-      const query = `INSERT INTO ${table}(${fields}) VALUES('${userIdx[0].userIdx}',${groupIdx})`;
-      //const values = [userIdx[0].userIdx, groupIdx];
-      //console.log(values);
-      const result = await pool.queryParam_None(query);
+      const result = await pool.queryParam_None(selectQuery);
+      console.log(result);
       if (!result) {
         resolve({
-          code: statusCode.INTERNAL_SERVER_ERROR,
-          json: utils.successFalse(responseMessage.INVITE_FAIL)
+          code: statusCode.NOT_FOUND,
+          json: utils.successFalse(responseMessage.RANK_READ_FAIL)
         });
         return;
       }
-      console.log(result);
-      const groupId = result.insertId;
       resolve({
         code: statusCode.OK,
-        json: utils.successTrue(responseMessage.INVITE_SUCCESS, groupId)
+        json: utils.successTrue(responseMessage.RANK_READ_SUCCESS, result)
+      });
+    });
+  },
+  makeMandarins: ({ groupIdx, userIdx }) => {
+    const table = "user_groups";
+    const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE groupIdx=${groupIdx} AND userIdx=${userIdx}`;
+    return new Promise(async (resolve, reject) => {
+      const updateResult = await pool.queryParam_None(updateQuery);
+      console.log(updateResult);
+      if (!updateResult) {
+        resolve({
+          code: status(statusCode.NOT_FOUND),
+          json: utils.successFalse(responseMessage.RANK_READ_FAIL)
+        });
+        return;
+      }
+      resolve({
+        code: statusCode.OK,
+        json: utils.successTrue(message, updateResult)
       });
     });
   }

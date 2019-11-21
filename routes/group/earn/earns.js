@@ -6,15 +6,14 @@ const responseMessage = require("../../../module/util/responseMessage");
 const Earn = require("../../../model/earn");
 const utils = require("../../../module/util/utils");
 
-router.post("/", (req, res) => {
+router.patch("/", (req, res) => {
   const { groupIdx } = req.params;
-  const { userIdx, mandarins } = req.body;
+  const { userIdx } = req.body;
   // 아이디 중복 체크
-  if (!groupIdx || !userIdx || !mandarins) {
+  if (!groupIdx || !userIdx) {
     const missParameters = Object.entries({
       groupIdx,
-      userIdx,
-      mandarins
+      userIdx
     })
       .filter(it => it[1] == undefined)
       .map(it => it[0])
@@ -26,10 +25,9 @@ router.post("/", (req, res) => {
       );
     return;
   }
-  Earn.makeMandarins({
+  Earn.selectMandarins({
     groupIdx,
-    userIdx,
-    mandarins
+    userIdx
   })
     .then(({ code, json }) => {
       res.status(code).send(json);

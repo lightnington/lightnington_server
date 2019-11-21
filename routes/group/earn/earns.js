@@ -7,11 +7,9 @@ const Earn = require("../../../model/earn");
 const utils = require("../../../module/util/utils");
 
 router.post("/", (req, res) => {
-  const { name } = req.params;
   const { id } = req.body;
-  if (!name || !id) {
+  if (!id) {
     const missParameters = Object.entries({
-      name,
       id
     })
       .filter(it => it[1] == undefined)
@@ -25,7 +23,6 @@ router.post("/", (req, res) => {
     return;
   }
   Earn.makeMandarins({
-    name,
     id
 })
     .then(({ code, json }) => {

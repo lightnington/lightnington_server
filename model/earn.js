@@ -5,10 +5,9 @@ const pool = require("../module/poolAsync");
 
 module.exports = {
   makeMandarins: ({
-    name,
     id
   }) => {
-    const table = "user_groups";
+    const table = "user";
     return new Promise(async (resolve, reject) => {
       // userIdx 여부 체크
       const userIdx = await pool.queryParam_None(`SELECT userIdx FROM user WHERE id='${id}'`);
@@ -20,20 +19,10 @@ module.exports = {
         });
         return;
       }
-      const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM groups WHERE name='${name}'`);
-      console.log(groupIdx);
-      if (!groupIdx) {
-        resolve({
-          code: statusCode.BAD_REQUEST,
-          json: utils.successFalse(responseMessage.NO_GROUP)
-        });
-        return;
-      }
-      console.log(groupIdx[0].groupIdx);
-      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE groupIdx='${groupIdx[0].groupIdx}' AND userIdx='${userIdx[0].userIdx}'`;
+      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE userIdx='${userIdx[0].userIdx}'`;
       const updateResult = await pool.queryParam_None(updateQuery);
       const currentMandarin = await pool.queryParam_None(
-        `SELECT mandarins FROM user_groups WHERE id='${id}'`
+        `SELECT mandarins FROM ${table} WHERE id='${id}'`
       );
       if (!updateResult) {
         resolve({

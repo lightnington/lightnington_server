@@ -7,9 +7,7 @@ const Rank = require("../../../model/rank");
 const utils = require("../../../module/util/utils");
 
 router.get('/', (req, res) => {
-    const {name} = req.params;
     Rank.read({
-            name
         })
         .then(({
             code,

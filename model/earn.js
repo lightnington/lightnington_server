@@ -12,6 +12,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       // userIdx 여부 체크
       const userIdx = await pool.queryParam_None(`SELECT userIdx FROM user WHERE id='${id}'`);
+      console.log(userIdx);
       if (!userIdx) {
         resolve({
           code: statusCode.BAD_REQUEST,
@@ -19,7 +20,8 @@ module.exports = {
         });
         return;
       }
-      const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM user WHERE name='${name}'`);
+      const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM groups WHERE name='${name}'`);
+      console.log(groupIdx);
       if (!groupIdx) {
         resolve({
           code: statusCode.BAD_REQUEST,
@@ -27,8 +29,8 @@ module.exports = {
         });
         return;
       }
-
-      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE groupIdx=${groupIdx} AND userIdx=${userIdx}`;
+      console.log(groupIdx[0].groupIdx);
+      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE groupIdx='${groupIdx[0].groupIdx}' AND userIdx='${userIdx[0].userIdx}'`;
       const updateResult = await pool.queryParam_None(updateQuery);
       if (!updateResult) {
         resolve({

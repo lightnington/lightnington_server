@@ -5,7 +5,7 @@ const pool = require("../module/poolAsync");
 
 module.exports = {
     create: ({
-        groupIdx,
+        name,
         id
     }) => {
         const table = 'user_groups';
@@ -20,8 +20,16 @@ module.exports = {
                 });
                 return;
             }
+            const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM user WHERE name='${name}'`);
+            if (!groupIdx) {
+                resolve({
+                    code: statusCode.BAD_REQUEST,
+                    json: utils.successFalse(responseMessage.NO_GROUP)
+                });
+                return;
+            }
             // group create 성공
-            const query = `INSERT INTO ${table}(${fields}) VALUES('${userIdx[0].userIdx}',${groupIdx}, '${id}')`;
+            const query = `INSERT INTO ${table}(${fields}) VALUES('${userIdx[0].userIdx}',${groupIdx[0].groupIdx}, '${id}')`;
             //const values = [userIdx[0].userIdx, groupIdx];
             //console.log(values);
             const result = await pool.queryParam_None(query);

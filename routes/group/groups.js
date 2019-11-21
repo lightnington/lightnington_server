@@ -6,6 +6,35 @@ const responseMessage = require("../../module/util/responseMessage");
 const Group = require("../../model/group");
 const utils = require("../../module/util/utils");
 
+router.get('/', (req, res) => {
+  const { name } = req.body;
+  Group.readAll()
+      .then(({
+          code,
+          json
+      }) => {
+          res.status(code).send(json);
+      }).catch(err => {
+          res.status(statusCode.INTERNAL_SERVER_ERROR)
+              .send(utils.successFalse(responseMessage.INTERNAL_SERVER_ERROR));
+      });
+});
+
+router.get('/groups', (req, res) => {
+  const { name } = req.body;
+  Group.read({
+    name
+  })
+      .then(({
+          code,
+          json
+      }) => {
+          res.status(code).send(json);
+      }).catch(err => {
+          res.status(statusCode.INTERNAL_SERVER_ERROR)
+              .send(utils.successFalse(responseMessage.INTERNAL_SERVER_ERROR));
+      });
+});
 router.post("/", (req, res) => {
   const { userIdx } = req.params;
   const { name } = req.body;

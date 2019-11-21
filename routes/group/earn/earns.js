@@ -1,18 +1,20 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-//const authUtil = require('../../module/util/authUtils');
-const statusCode = require("../../module/util/statusCode");
-const responseMessage = require("../../module/util/responseMessage");
-const Group = require("../../model/group");
-const utils = require("../../module/util/utils");
+//const authUtil = require('../../../module/util/authUtils');
+const statusCode = require("../../../module/util/statusCode");
+const responseMessage = require("../../../module/util/responseMessage");
+const Earn = require("../../../model/earn");
+const utils = require("../../../module/util/utils");
 
 router.post("/", (req, res) => {
-  const { userIdx } = req.params;
-  const { name } = req.body;
-  if (!userIdx || !name) {
+  const { groupIdx } = req.params;
+  const { userIdx, mandarins } = req.body;
+  // 아이디 중복 체크
+  if (!groupIdx || !userIdx || !mandarins) {
     const missParameters = Object.entries({
+      groupIdx,
       userIdx,
-      name
+      mandarins
     })
       .filter(it => it[1] == undefined)
       .map(it => it[0])
@@ -24,8 +26,10 @@ router.post("/", (req, res) => {
       );
     return;
   }
-  Group.create({
-    name
+  Earn.makeMandarins({
+    groupIdx,
+    userIdx,
+    mandarins
   })
     .then(({ code, json }) => {
       res.status(code).send(json);

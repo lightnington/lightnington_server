@@ -9,8 +9,7 @@ module.exports = {
         id
     }) => {
         const table = 'user_groups';
-        const fields = 'userIdx, groupIdx';
-        const questions = `?`;
+        const fields = 'userIdx, groupIdx, id';
         return new Promise(async (resolve, reject) => {
             // userIdx 여부 체크
             const userIdx = await pool.queryParam_None(`SELECT userIdx FROM user WHERE id='${id}'`);
@@ -22,7 +21,7 @@ module.exports = {
                 return;
             }
             // group create 성공
-            const query = `INSERT INTO ${table}(${fields}) VALUES('${userIdx[0].userIdx}',${groupIdx})`;
+            const query = `INSERT INTO ${table}(${fields}) VALUES('${userIdx[0].userIdx}',${groupIdx}, '${id}')`;
             //const values = [userIdx[0].userIdx, groupIdx];
             //console.log(values);
             const result = await pool.queryParam_None(query);

@@ -8,11 +8,20 @@ module.exports = {
         groupIdx
     }) => {
         const table = 'user_groups';
-        const query = `SELECT mandarins, userIdx FROM ${table} WHERE groupIdx=${groupIdx};`;
+        const rows = [];
+        const jss = {};
+        const query = `SELECT mandarins, id, userIdx FROM ${table} WHERE groupIdx=${groupIdx};`;
         const message = responseMessage.RANK_READ_SUCCESS;
         return new Promise(async (resolve, reject) => {
             const result = await pool.queryParam_None(query);
-            console.log(result);
+            result.forEach(function(row){
+                rows.push(row);
+            });
+
+            rows.sort((a,b) =>{
+                return a.mandarins > b.mandarins ? -1 : 1;
+            })
+            console.log(rows);
             if (!result) {
                 resolve({
                     code: statusCode.NOT_FOUND,
@@ -22,7 +31,7 @@ module.exports = {
             }
             resolve({
                 code: statusCode.OK,
-                json: utils.successTrue(message, result)
+                json: utils.successTrue(message, rows)
             });
         });
     },

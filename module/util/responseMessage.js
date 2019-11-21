@@ -35,5 +35,7 @@ module.exports = {
   NO_USER: "존재하지 않는 유저 입니다.",
   NO_GROUP: "존재하는 게시글 입니다.",
   MISS_MATCH_PW: "비밀번호가 일치하지 않습니다",
+  EARN_MANDARIN_SUCCESS: "귤 획득 성공",
+  EARN_MANDARIN_FAIL: "귤 획득 실패",
   INTERNAL_SERVER_ERROR: "서버 내부 오류"
 };

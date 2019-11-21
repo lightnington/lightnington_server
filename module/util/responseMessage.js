@@ -14,6 +14,7 @@ module.exports = {
   SIGN_IN_SUCCESS: "로그인 성공",
   SIGN_IN_FAIL: "로그인 실패",
   ALREADY_ID: "존재하는 ID 입니다.",
+  POSSIBLE_ID: "사용가능한 ID 입니다.",
   NO_USER: "존재하지 않는 유저 id 입니다.",
   MISS_MATCH_PW: "비밀번호가 일치하지 않습니다",
   GROUP_CREATE_SUCCESS: "그룹 작성 성공",

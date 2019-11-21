@@ -34,6 +34,26 @@ router.post("/signin", async (req, res) => {
     .catch(err => console.log(err));
 });
 
+router.post("/check", async function(req, res) {
+  const { id } = req.body;
+  const selectQuery = `SELECT id FROM user WHERE id="${id}"`;
+  let isAlreadyHave = false;
+  await pool.queryParam_None(selectQuery).then(data => {
+    console.log(data);
+    if (data.length !== 0) {
+      isAlreadyHave = true;
+      res
+        .status(statusCode.SERVICE_UNAVAILABLE)
+        .send(utils.successFalse(responseMessage.ALREADY_ID));
+      return;
+    } else {
+      res
+        .status(statusCode.OK)
+        .send(utils.successTrue(responseMessage.POSSIBLE_ID));
+    }
+  });
+});
+
 router.post("/signup", async function(req, res) {
   const { id, pwd, phone } = req.body;
   const insertQuery = "INSERT INTO user (id, pwd, phone) values (?, ?, ?);";

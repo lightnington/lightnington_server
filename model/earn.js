@@ -4,14 +4,13 @@ const responseMessage = require("../module/util/responseMessage");
 const pool = require("../module/poolAsync");
 
 module.exports = {
-  makeMandarins: ({
-    name,
-    id
-  }) => {
+  makeMandarins: ({ name, id }) => {
     const table = "user_groups";
     return new Promise(async (resolve, reject) => {
       // userIdx 여부 체크
-      const userIdx = await pool.queryParam_None(`SELECT userIdx FROM user WHERE id='${id}'`);
+      const userIdx = await pool.queryParam_None(
+        `SELECT userIdx FROM user WHERE id='${id}'`
+      );
       if (!userIdx) {
         resolve({
           code: statusCode.BAD_REQUEST,
@@ -19,7 +18,9 @@ module.exports = {
         });
         return;
       }
-      const groupIdx = await pool.queryParam_None(`SELECT groupIdx FROM user WHERE name='${name}'`);
+      const groupIdx = await pool.queryParam_None(
+        `SELECT groupIdx FROM groups WHERE name='${name}'`
+      );
       if (!groupIdx) {
         resolve({
           code: statusCode.BAD_REQUEST,
@@ -27,19 +28,25 @@ module.exports = {
         });
         return;
       }
-
-      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE groupIdx=${groupIdx} AND userIdx=${userIdx}`;
+      console.log(groupIdx, userIdx);
+      const updateQuery = `UPDATE ${table} SET mandarins=mandarins+1 WHERE groupIdx=${groupIdx[0].groupIdx} AND userIdx=${userIdx[0].userIdx}`;
       const updateResult = await pool.queryParam_None(updateQuery);
+      const currentMandarin = await pool.queryParam_None(
+        `SELECT mandarins FROM user_groups WHERE id='${id}'`
+      );
       if (!updateResult) {
         resolve({
           code: status(statusCode.NOT_FOUND),
-          json: utils.successFalse(responseMessage.RANK_READ_FAIL)
+          json: utils.successFalse(responseMessage.EARN_MANDARIN_FAIL)
         });
         return;
       }
       resolve({
         code: statusCode.OK,
-        json: utils.successTrue(responseMessage.RANK_READ_SUCCESS, updateResult)
+        json: utils.successTrue(
+          responseMessage.EARN_MANDARIN_SUCCESS,
+          currentMandarin[0].mandarins
+        )
       });
     });
   }

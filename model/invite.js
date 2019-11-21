@@ -29,7 +29,7 @@ module.exports = {
             if (!result) {
                 resolve({
                     code: statusCode.INTERNAL_SERVER_ERROR,
-                    json: utils.successFalse(responseMessage.GROUP_CREATE_FAIL)
+                    json: utils.successFalse(responseMessage.INVITE_FAIL)
                 });
                 return;
             }
@@ -37,7 +37,7 @@ module.exports = {
             const groupId = result.insertId;
             resolve({
                 code: statusCode.OK,
-                json: utils.successTrue(responseMessage.GROUP_CREATE_SUCCESS, groupId)
+                json: utils.successTrue(responseMessage.INVITE_SUCCESS, groupId)
             });
         });
     }

@@ -32,9 +32,6 @@ module.exports = {
       } else if (err.message === "invalid token") {
         console.log("invalid token");
         return -2;
-      } else {
-        console.log("invalid token");
-        return -2;
       }
     }
     return decoded;

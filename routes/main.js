@@ -11,21 +11,21 @@ router.get('/', upload.array('images', 3) , async(req, res) => {
     //favorite
     const favorite = [];
     var favorite_json = new Object();
-     favorite_json.image = req.files[0].location;
+     favorite_json.image = "https://sopt-kkoon9.s3.ap-northeast-2.amazonaws.com/1574495684431.jpg";
     favorite_json.name = "test1";
     favorite.push(favorite_json);
     //beauty
     const beauty = [];
     var beauty_json = new Object();
-     beauty_json.image = req.files[1].location;
+     beauty_json.image = "https://sopt-kkoon9.s3.ap-northeast-2.amazonaws.com/1574494559696.jpg";
     beauty_json.brand = "test1";
     beauty_json.product = "test1";
-    beauty_json.price = "200won";
+    beauty_json.price = "200";
     beauty.push(beauty_json);
     //ad
     const ad = [];
     var ad_json = new Object();
-     ad_json.image = req.files[2].location;
+     ad_json.image = "https://sopt-kkoon9.s3.ap-northeast-2.amazonaws.com/1574495385381.jpg";
     ad.push(ad_json);
 
     var json = new Object();

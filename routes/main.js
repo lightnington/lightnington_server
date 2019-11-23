@@ -3,7 +3,7 @@ var router = express.Router();
 const upload = require('../config/multer');
 const resMessage = require("../module/util/responseMessage");
 const statusCode = require("../module/util/statusCode");
-const utils = require("../module/util/utils");
+const util = require("../module/util/utils");
 router.get('/', upload.array('images', 3) , async(req, res) => {
     console.log(req.files);
     //전체
@@ -11,13 +11,13 @@ router.get('/', upload.array('images', 3) , async(req, res) => {
     //favorite
     const favorite = [];
     var favorite_json = new Object();
-    favorite_json.image = req.files[0].location;
+     favorite_json.image = req.files[0].location;
     favorite_json.name = "test1";
     favorite.push(favorite_json);
     //beauty
     const beauty = [];
     var beauty_json = new Object();
-    beauty_json.image = req.files[1].location;
+     beauty_json.image = req.files[1].location;
     beauty_json.brand = "test1";
     beauty_json.product = "test1";
     beauty_json.price = "200won";
@@ -25,7 +25,7 @@ router.get('/', upload.array('images', 3) , async(req, res) => {
     //ad
     const ad = [];
     var ad_json = new Object();
-    ad_json.image = req.files[2].location;
+     ad_json.image = req.files[2].location;
     ad.push(ad_json);
 
     var json = new Object();

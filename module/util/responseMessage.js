@@ -37,5 +37,6 @@ module.exports = {
   MISS_MATCH_PW: "비밀번호가 일치하지 않습니다",
   EARN_MANDARIN_SUCCESS: "귤 획득 성공",
   EARN_MANDARIN_FAIL: "귤 획득 실패",
-  INTERNAL_SERVER_ERROR: "서버 내부 오류"
+  INTERNAL_SERVER_ERROR: "서버 내부 오류",
+  MAIN_SUCCESS : "메인 불러오기 성공!",
 };

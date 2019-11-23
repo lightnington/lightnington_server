@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
             res.status(code).send(json);
         }).catch(err => {
             res.status(statusCode.INTERNAL_SERVER_ERROR)
-                .send(utils.successFalse(responseMessage.INTERNAL_SERVER_ERROR));
+                .send(utils.successFalse(responseMessage.INTERNAL_SERVER_ERRO));
         });
 });
 module.exports = router;

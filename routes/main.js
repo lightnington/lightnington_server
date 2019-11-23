@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const util = require('../module/utils');
-const statusCode = require('../module/statusCode');
-const resMessage = require('../module/responseMessage');
+const resMessage = require("../module/util/responseMessage");
+const statusCode = require("../module/util/statusCode");
+const util = require("../module/util/utils");
 
 router.get('/' , async(req, res) => {
     //전체

@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const upload = require('../config/multer');
-const util = require('../module/utils');
-const statusCode = require('../module/statusCode');
-const resMessage = require('../module/responseMessage');
-
+const resMessage = require("../module/util/responseMessage");
+const statusCode = require("../module/util/statusCode");
+const utils = require("../module/util/utils");
 router.get('/', upload.array('images', 3) , async(req, res) => {
     console.log(req.files);
     //전체
